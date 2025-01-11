@@ -81,7 +81,7 @@ if os.path.exists("Config.env"):
 
 
 API_ID = int(getenv("API_ID", "23174954"))
-API_HASH = getenv("API_HASH", "2b17593bd236fbcbb2900b9f98564afc)
+API_HASH = getenv("API_HASH", "2b17593bd236fbcbb2900b9f98564afc")
 BOT_TOKEN = getenv("BOT_TOKEN", "7559341430:AAFQG5QiOjrZACa1zR5ayNU10ePe3G8e_po")
 STRING_SESSION = getenv("STRING_SESSION", "AgFhnyoAdGiY0D2HXJR3NKWemU5SlOPY64eTNnxM1VOP5YG970bHScfXw_w3nQC2pXdBZZlztT4B1Vk3llU0B9rCD_wsXJ6ulVFs3Revjk17c6ynX9m6zHAlWAti5zCuKhz0GNpT0Ht2Vc4RHuPZ1uRPqceS1v_DPvb-gs7s66FqaebArMO7kUUyqnqz9x7CFRsDaKr_fTcIquBT5nI-fv8-rCKPOTy8c2vhyTzEoYl2F_3Ov-Q1tP9eXEQRiaVt26_NBnBZCIm4AqtGndy1XsE3V8Cvvyh8JZrzA3T8JDdPdEmbU1tk033BQxnidKcAkHlb9pic537xzEhGnwkDGIAmRMi0CgAAAAG18Wz-AQ")
 MONGO_DB_URL = getenv("MONGO_DB_URL", "mongodb+srv://gpsfardi:mohaMmoha900@cluster0.fj1u6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
