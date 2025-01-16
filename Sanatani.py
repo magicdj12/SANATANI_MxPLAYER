@@ -80,9 +80,9 @@ if os.path.exists("Config.env"):
     load_dotenv("Config.env")
 
 
-API_ID = int(getenv("API_ID", "20901929"))
-API_HASH = getenv("API_HASH", "a3ded12cd9a4c8b1de63906e3b502e64")
-BOT_TOKEN = getenv("BOT_TOKEN", "7799145045:AAGFno-2KcG7Fe0T5kZyByBxaZXM9FINEfs")
+API_ID = int(getenv("API_ID", "26718201"))
+API_HASH = getenv("API_HASH", "89c6268b2a70bcc99c81e3bb240244cf")
+BOT_TOKEN = getenv("BOT_TOKEN", "8073758200:AAFU2lt7fkbS9QyWclZqTRa4_RSuo8Y70ms")
 STRING_SESSION = getenv("STRING_SESSION", "AgGXr_kAMnRR1bNGxt79KvBd0BMdz95Q_AZ2yhMJxy5U_2tbDhlsNZaX9qxEx9NQo1DXoQwi1iLjEWtt8T9XMaXwQ5_6IkF9oRORKJAoQomCpa991LYS5zgeTCfxu2wwAlEN8TqXDbJUgMRq4BT8H_S5d563bjHkwt9QxPNOAmISEQGx7jAuhzErKn_cTPKr8hsI2YKQT4l1VWvOS1BxMs7_WoIckfEMsVfjIC3jYNfVehpNkH2At777mqQDSecJUqMat3pnP7MSIucUkMVRHA9Wkc7E9HPkBUDD81vDnAILavVGPrqrVU2AKwrDYlKfwmCQK61SQg9cKXQookHdIgfQ3f-RbQAAAAHi6b6PAA")
 MONGO_DB_URL = getenv("MONGO_DB_URL", "mongodb+srv://m33537924:JLBRhGx8FLxy43c@cluster0.zy8ld.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 OWNER_ID = int(getenv("OWNER_ID", "7750519507"))
@@ -90,7 +90,6 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", "-1002193065248"))
 START_IMAGE_URL = getenv("START_IMAGE_URL", "https://files.catbox.moe/dclvrs.mp4")
 REPO_IMAGE_URL = getenv("REPO_IMAGE_URL", "https://files.catbox.moe/nswh7s.jpg")
 STATS_IMAGE_URL = getenv("STATS_IMAGE_URL", "https://files.catbox.moe/2hgoq7.jpg")
-
 # Memory Database
 
 ACTIVE_AUDIO_CHATS = []
