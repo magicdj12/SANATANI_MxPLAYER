@@ -9,6 +9,7 @@ pillow==9.5.0
 py-tgcalls==2.1.0.dev2
 python-dotenv==1.0.1
 tgcrypto==1.2.5
+genai
 youtube-search-python
 yt-dlp==2024.12.15.232913.dev0
 git+https://github.com/KurimuzonAkuma/pyrogram
