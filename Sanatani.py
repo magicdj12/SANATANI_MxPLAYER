@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from typing import Union, List, Pattern
 from logging.handlers import RotatingFileHandler
-
+import google.generativeai as genai
 
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError
@@ -80,26 +80,61 @@ if os.path.exists("Config.env"):
     load_dotenv("Config.env")
 
 
-API_ID = int(getenv("API_ID", "20901929"))
-API_HASH = getenv("API_HASH", "a3ded12cd9a4c8b1de63906e3b502e64")
-BOT_TOKEN = getenv("BOT_TOKEN", "7799145045:AAGFno-2KcG7Fe0T5kZyByBxaZXM9FINEfs")
-STRING_SESSION = getenv("STRING_SESSION", "AgGXr_kAMnRR1bNGxt79KvBd0BMdz95Q_AZ2yhMJxy5U_2tbDhlsNZaX9qxEx9NQo1DXoQwi1iLjEWtt8T9XMaXwQ5_6IkF9oRORKJAoQomCpa991LYS5zgeTCfxu2wwAlEN8TqXDbJUgMRq4BT8H_S5d563bjHkwt9QxPNOAmISEQGx7jAuhzErKn_cTPKr8hsI2YKQT4l1VWvOS1BxMs7_WoIckfEMsVfjIC3jYNfVehpNkH2At777mqQDSecJUqMat3pnP7MSIucUkMVRHA9Wkc7E9HPkBUDD81vDnAILavVGPrqrVU2AKwrDYlKfwmCQK61SQg9cKXQookHdIgfQ3f-RbQAAAAHi6b6PAA")
-MONGO_DB_URL = getenv("MONGO_DB_URL", "mongodb+srv://ranger:mohaMmoha900@cluster2.24a45.mongodb.net/?retryWrites=true&w=majority&appName=Cluster2")
-OWNER_ID = int(getenv("OWNER_ID", "6543211255"))
-LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", "-1002371756731"))
+API_ID = int(getenv("API_ID", "27227089"))
+API_HASH = getenv("API_HASH", "03ac3b8dd6a14cf5a231203db4660f59")
+BOT_TOKEN = getenv("BOT_TOKEN", "7710415795:AAHB_dYTTA1AGE8CbWW9WoR8jjJ19eZJA48")
+STRING_SESSION = getenv("STRING_SESSION", "AQGfc9EARh-RE5HWFyjWBY6ZCP3iWMuqEAeOKBXrgpYBIBlwWnNbuYQtaKYF14nxVaGp4E-YR6Js8gbFc74Wh6e4L7gMUHTGkpzcsf_8-6lfaqhX9yMbTpqJ9kyj7ElLXPPWedUL8PbwnlWagyhcip94kHOWLpHZd9yh8_DTk8igELJwj-1U_7P0mn3FQrWXr409UNgtlqlvDr-UO1LfJbgdW1JQdRpyyTR6joZTtJZwcHAaCAY6WjrbAJWKaaWnr5TJy53K5v3_4CB7t36ebscWA85PsncAhFW4kx-k2WNP60FqR5EDehydbLYCg0QfJTe9adVOSVuPznAcw-0TjoZnhGjeBgAAAAHRJtQMAA")
+MONGO_DB_URL = getenv("MONGO_DB_URL", "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.8")
+OWNER_ID = int(getenv("OWNER_ID", "7750519507"))
+LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", "-1002288775154"))
 START_IMAGE_URL = getenv("START_IMAGE_URL", "https://files.catbox.moe/dclvrs.mp4")
 REPO_IMAGE_URL = getenv("REPO_IMAGE_URL", "https://files.catbox.moe/nswh7s.jpg")
 STATS_IMAGE_URL = getenv("STATS_IMAGE_URL", "https://files.catbox.moe/2hgoq7.jpg")
+TV_STREAMS = {
+    "شبکه 1": "http://tv1.irib.ir/live-stream/index.m3u8",
+    "شبکه 2": "http://tv2.irib.ir/live-stream/index.m3u8",
+    "شبکه 3": "http://tv3.irib.ir/live-stream/index.m3u8",
+    "شبکه 4": "http://tv4.irib.ir/live-stream/index.m3u8",
+    "شبکه 5": "http://tv5.irib.ir/live-stream/index.m3u8"
+}
+SUDO_USERS = 7750519507,
+RADIO_STREAMS = {
+    "رادیو جوان": "http://s0.cdn1.iranseda.ir:1935/liveedge/radio-javan/playlist.m3u8",
+    "رادیو پیام": "http://s0.cdn1.iranseda.ir:1935/liveedge/radio-payam/playlist.m3u8",
+    "رادیو تهران": "http://s0.cdn1.iranseda.ir:1935/liveedge/radio-tehran/playlist.m3u8",
+    "رادیو ورزش": "http://s0.cdn1.iranseda.ir:1935/liveedge/radio-varzesh/playlist.m3u8"
+}
 
+SATELLITE_STREAMS = {
+    "پرشین تی‌وی": "http://stream.persiantv1.com/ptv1/playlist.m3u8",
+    "من و تو": "http://live.manoto.tv/live/playlist.m3u8",
+    "ایران اینترنشنال": "http://live.iranintl.com/live/playlist.m3u8"
+}
+MOVIE_STREAMS = {
+    "فیلم 1": "movie_stream_url_1",
+    "فیلم 2": "movie_stream_url_2",
+}
+GEMINI_API_KEY = {"AIzaSyBQHwww_7QXwPVPKBxGPxZgxDVGBHxTzKE",
+                   "AIzaSyBQHwww_7QXwPVPKBxGPxZgxDVGBHxTzKE",
+                   "AIzaSyDxRrJSUZ8XxXuG-8FYvBhFh7zJg-c5VXc",
+                   "AIzaSyC-kZnkgzHBF2WQcHxB8OFpBOr_XlZn5Yk"
+}                   
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel('gemini-pro')
+
+# دیکشنری برای ذخیره اشتراک‌ها
+subscriptions = {}
+volume_levels = {}
+
+# دستور جمینی
 # Memory Database
 
 ACTIVE_AUDIO_CHATS = []
 ACTIVE_VIDEO_CHATS = []
 ACTIVE_MEDIA_CHATS = []
-volume_level = {}  # {chat_id: volume}
-
 
 QUEUE = {}
+
 
 # Command & Callback Handlers
 
@@ -341,27 +376,6 @@ async def add_served_user(user_id: int):
     if is_served:
         return
     return await usersdb.insert_one({"user_id": user_id})
-async def get_youtube_info(link: str) -> Union[dict, None]:
-    try:
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(link, download=False)
-            return info
-    except Exception as e:
-        print(f"Error in get_youtube_info: {e}")
-        return None
-async def play_audio(chat_id, file_path, volume=100):
-    try:
-        await call.join_group_call(
-            chat_id,
-            AudioPiped(
-                file_path,
-                HighQualityAudio(),
-            ),
-            stream_type=StreamType.PULSE_STREAM,
-        )
-        await call.change_volume_call(chat_id, volume)
-    except Exception as e:
-        print(f"Error in play_audio: {e}")    
 
 CBUTTON = InlineKeyboardMarkup(
     inline_keyboard=[
@@ -425,7 +439,286 @@ HELP_X = """```
 
 
 V ɪ s ɪ ᴛ - [ʜᴇʀᴇ](https://t.me/linkdonitehranasli)"""
+def get_media_panel():
+    buttons = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("📺 تلویزیون", callback_data="tv_channels"),
+            InlineKeyboardButton("🛰 ماهواره", callback_data="sat_channels")
+        ],
+        [
+            InlineKeyboardButton("📻 رادیو", callback_data="radio_channels"),
+            InlineKeyboardButton("🎬 فیلم", callback_data="movie_channels")
+        ],
+        [
+            InlineKeyboardButton("⏹ پایان پخش", callback_data="stop_stream_and_leave_vc")
+        ]
+    ])
+    return buttons
+@app.on_callback_query(filters.regex("^movie_channels$"))
+async def movie_channels_callback(_, query):
+    buttons = []
+    for movie, stream in MOVIE_STREAMS.items():
+        buttons.append([
+            InlineKeyboardButton(movie, callback_data=f"play_movie_{stream}")
+        ])
+    buttons.append([InlineKeyboardButton("🔙 برگشت", callback_data="back_to_media")])
+    
+    await query.message.edit_text(
+        "**🎬 فیلم مورد نظر خود را انتخاب کنید:**",
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+# اضافه کردن دستورات جدید
+@app.on_message(cdx(["media", "رسانه"]) & ~filters.private)
+async def media_panel_command(_, message):
+    chat_id = message.chat.id
+    try:
+        await message.delete()
+    except Exception:
+        pass
+    
+    await message.reply_photo(
+        photo="https://te.legra.ph/file/9ac96338d2f465c0d3d6d.jpg",
+        caption="**🎯 پنل پخش رسانه\n\n📺 لطفاً نوع رسانه مورد نظر خود را انتخاب کنید:**",
+        reply_markup=get_media_panel()
+    )
 
+# اضافه کردن کالبک‌ها
+@app.on_callback_query(filters.regex("^tv_channels$"))
+async def tv_channels_callback(_, query):
+    buttons = []
+    for channel, stream in TV_STREAMS.items():
+        buttons.append([
+            InlineKeyboardButton(channel, callback_data=f"play_tv_{stream}")
+        ])
+    buttons.append([InlineKeyboardButton("🔙 برگشت", callback_data="back_to_media")])
+    
+    await query.message.edit_text(
+        "**📺 کانال مورد نظر خود را انتخاب کنید:**",
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+
+@app.on_callback_query(filters.regex("^radio_channels$"))
+async def radio_channels_callback(_, query):
+    buttons = []
+    for station, stream in RADIO_STREAMS.items():
+        buttons.append([
+            InlineKeyboardButton(station, callback_data=f"play_radio_{stream}")
+        ])
+    buttons.append([InlineKeyboardButton("🔙 برگشت", callback_data="back_to_media")])
+    
+    await query.message.edit_text(
+        "**📻 ایستگاه رادیویی مورد نظر خود را انتخاب کنید:**",
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+
+@app.on_callback_query(filters.regex("^sat_channels$"))
+async def sat_channels_callback(_, query):
+    buttons = []
+    for channel, stream in SATELLITE_STREAMS.items():
+        buttons.append([
+            InlineKeyboardButton(channel, callback_data=f"play_sat_{stream}")
+        ])
+    buttons.append([InlineKeyboardButton("🔙 برگشت", callback_data="back_to_media")])
+    
+    await query.message.edit_text(
+        "**🛰 شبکه ماهواره‌ای مورد نظر خود را انتخاب کنید:**",
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+
+@app.on_callback_query(filters.regex("^play_(tv|radio|sat)_(.+)$"))
+async def play_stream_callback(_, query):
+    stream_type = query.matches[0].group(1)
+    stream_url = query.matches[0].group(2)
+    chat_id = query.message.chat.id
+    
+    try:
+        await call.join_group_call(
+            chat_id,
+            MediaStream(
+                stream_url,
+                video_flags=VideoQuality.HD_720p if stream_type != "radio" else None,
+                audio_flags=AudioQuality.HIGH
+            )
+        )
+        
+        stream_types = {
+            "tv": "📺 تلویزیون",
+            "radio": "📻 رادیو",
+            "sat": "🛰 ماهواره"
+        }
+        
+        await query.message.edit_text(
+            f"**✅ پخش {stream_types[stream_type]} آغاز شد**\n\n"
+            "برای تغییر یا توقف پخش از دکمه‌های زیر استفاده کنید:",
+            reply_markup=get_media_panel()
+        )
+    except Exception as e:
+        
+        await query.message.reply_text(f"**🚫 خطا در پخش:** `{str(e)}`")
+@app.on_message(cdx(["هی", "hey"]) & ~filters.private)
+async def gemini_command(_, message):
+    if len(message.command) < 2:
+        await message.reply_text("لطفاً سوال خود را بعد از دستور بنویسید\nمثال: هی سلام چطوری؟")
+        return
+
+    question = " ".join(message.command[1:])
+    try:
+        response = await asyncio.to_thread(
+            lambda: model.generate_content(question).text
+        )
+        await message.reply_text(f"🤖 پاسخ جمینی:\n\n{response}")
+    except Exception as e:
+        await message.reply_text(f"خطا در دریافت پاسخ از جمینی: {str(e)}")
+
+@app.on_message(cdx(["sub", "اشتراک"]) & filters.user(SUDO_USERS))
+async def add_subscription(_, message):
+    try:
+        user_id = message.reply_to_message.from_user.id
+        days = int(message.command[1])
+        
+        expiry_date = datetime.now() + timedelta(days=days)
+        subscriptions[user_id] = expiry_date
+        
+        await message.reply_text(
+            f"✅ اشتراک کاربر {user_id} به مدت {days} روز فعال شد\n"
+            f"📅 تاریخ انقضا: {expiry_date.strftime('%Y-%m-%d %H:%M:%S')}"
+        )
+    except Exception as e:
+        await message.reply_text(f"❌ خطا در افزودن اشتراک: {str(e)}")
+
+@app.on_message(cdx(["checksub", "چک"]))
+async def check_subscription(_, message):
+    user_id = message.from_user.id
+    if user_id in subscriptions:
+        remaining = subscriptions[user_id] - datetime.now()
+        if remaining.total_seconds() > 0:
+            days = remaining.days
+            hours = remaining.seconds // 3600
+            await message.reply_text(
+                f"✅ اشتراک شما فعال است\n"
+                f"⏳ زمان باقیمانده: {days} روز و {hours} ساعت"
+            )
+        else:
+            del subscriptions[user_id]
+            await message.reply_text("❌ اشتراک شما منقضی شده است")
+    else:
+        await message.reply_text("❌ شما اشتراک فعال ندارید")
+
+# تنظیمات صدا
+@app.on_message(cdx(["vol", "صدا"]))
+async def set_volume(_, message):
+    chat_id = message.chat.id
+    if len(message.command) < 2:
+        current_vol = volume_levels.get(chat_id, 100)
+        await message.reply_text(f"🔊 میزان صدای فعلی: {current_vol}%")
+        return
+    
+    try:
+        volume = int(message.command[1])
+        if not 0 <= volume <= 200:
+            await message.reply_text("❌ میزان صدا باید بین 0 تا 200 باشد")
+            return
+        
+        volume_levels[chat_id] = volume
+        await call.change_volume_call(chat_id, volume)
+        await message.reply_text(f"🔊 میزان صدا به {volume}% تغییر کرد")
+    except Exception as e:
+        await message.reply_text(f"❌ خطا در تنظیم صدا: {str(e)}")
+
+# اضافه کردن دکمه‌های تنظیم صدا به پنل پخش
+def get_media_panel():
+    buttons = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("📺 تلویزیون", callback_data="tv_channels"),
+            InlineKeyboardButton("🛰 ماهواره", callback_data="sat_channels")
+        ],
+        [
+            InlineKeyboardButton("📻 رادیو", callback_data="radio_channels"),
+            InlineKeyboardButton("🎬 فیلم", callback_data="movie_channels")
+        ],
+        [
+            InlineKeyboardButton("🔉 کم کردن", callback_data="volume_down"),
+            InlineKeyboardButton("🔊 زیاد کردن", callback_data="volume_up")
+        ],
+        [
+            InlineKeyboardButton("⏹ پایان پخش", callback_data="stop_stream_and_leave_vc")
+        ]
+    ])
+    return buttons
+
+# کالبک‌های تنظیم صدا
+@app.on_callback_query(filters.regex("^volume_(up|down)$"))
+async def volume_callback(_, query):
+    chat_id = query.message.chat.id
+    current_vol = volume_levels.get(chat_id, 100)
+    
+    if query.data == "volume_up":
+        new_vol = min(current_vol + 10, 200)
+    else:
+        new_vol = max(current_vol - 10, 0)
+    
+    try:
+        volume_levels[chat_id] = new_vol
+        await call.change_volume_call(chat_id, new_vol)
+        await query.answer(f"🔊 میزان صدا: {new_vol}%")
+    except Exception as e:
+        await query.answer(f"خطا: {str(e)}", show_alert=True)
+
+# چک کردن اشتراک قبل از اجرای دستورات
+def check_subscription_decorator(func):
+    async def wrapper(client, message):
+        user_id = message.from_user.id
+        if user_id in SUDO_USERS:
+            return await func(client, message)
+            
+        if user_id not in subscriptions:
+            await message.reply_text("❌ شما اشتراک فعال ندارید")
+            return
+            
+        if datetime.now() > subscriptions[user_id]:
+            del subscriptions[user_id]
+            await message.reply_text("❌ اشتراک شما منقضی شده است")
+            return
+            
+        return await func(client, message)
+    return wrapper
+
+# اعمال دکوراتور به دستورات
+@app.on_message(cdx(["media", "رسانه"]) & ~filters.private)
+@check_subscription_decorator
+async def media_panel_command(_, message):
+    # کد قبلی پنل رسانه
+    pass
+
+# راهنمای دستورات
+@app.on_message(cdx(["help", "راهنما"]))
+async def help_command(_, message):
+    help_text = """
+**🎯 راهنمای دستورات ربات:**
+
+**📺 پخش رسانه:**
+• `رسانه` یا `media` - نمایش پنل پخش رسانه
+• `صدا` یا `vol` [0-200] - تنظیم میزان صدا
+
+**🤖 هوش مصنوعی:**
+• `هی` یا `hey` [متن] - پرسش از جمینی
+
+**👤 سیستم اشتراک:**
+• `اشتراک` یا `sub` [تعداد روز] - افزودن اشتراک (فقط ادمین)
+• `چک` یا `checksub` - بررسی وضعیت اشتراک
+
+**⚙️ کنترل پخش:**
+• از دکمه‌های پنل برای کنترل پخش استفاده کنید
+• میزان صدا را با دکمه‌های 🔉 و 🔊 تنظیم کنید
+"""
+    await message.reply_text(help_text)
+
+@app.on_callback_query(filters.regex("^back_to_media$"))
+async def back_to_media_callback(_, query):
+    await query.message.edit_text(
+        "**🎯 پنل پخش رسانه\n\n📺 لطفاً نوع رسانه مورد نظر خود را انتخاب کنید:**",
+        reply_markup=get_media_panel()
+    )
 # Callback query handler
 @bot.on_callback_query(filters.regex("UTTAM_RATHORE"))
 async def helper_cb(client, CallbackQuery):
@@ -1284,68 +1577,7 @@ async def stream_audio_or_video(client, message):
         except Exception:
             LOGGER.info(f"🚫 Stream Error: {e}")
             return
-@bot.on_callback_query(filters.regex("pause_running_stream_on_vc"))
-async def pause_callback(client, callback_query):
-    chat_id = callback_query.message.chat.id
-    try:
-        call_status = await get_call_status(chat_id)
-        if call_status == "IDLE" or call_status == "NOTHING":
-            return await callback_query.answer("هیچ پخش جاری وجود ندارد", show_alert=True)
-        elif call_status == "PAUSED":
-            return await callback_query.answer("پخش قبلاً در حالت مکث قرار دارد", show_alert=True)
-        elif call_status == "PLAYING":
-            await call.pause_stream(chat_id)
-            await callback_query.answer("پخش در حالت مکث قرار گرفت", show_alert=True)
-    except Exception as e:
-        await callback_query.answer(f"خطا: {str(e)}", show_alert=True)
 
-@bot.on_callback_query(filters.regex("resume_paused_stream_on_vc"))
-async def resume_callback(client, callback_query):
-    chat_id = callback_query.message.chat.id
-    try:
-        call_status = await get_call_status(chat_id)
-        if call_status == "IDLE" or call_status == "NOTHING":
-            return await callback_query.answer("هیچ پخش جاری وجود ندارد", show_alert=True)
-        elif call_status == "PLAYING":
-            return await callback_query.answer("پخش در حال اجرا است", show_alert=True)
-        elif call_status == "PAUSED":
-            await call.resume_stream(chat_id)
-            await callback_query.answer("پخش از سر گرفته شد", show_alert=True)
-    except Exception as e:
-        await callback_query.answer(f"خطا: {str(e)}", show_alert=True)
-
-@bot.on_callback_query(filters.regex("skip_and_change_stream"))
-async def skip_callback(client, callback_query):
-    chat_id = callback_query.message.chat.id
-    try:
-        call_status = await get_call_status(chat_id)
-        if call_status == "IDLE" or call_status == "NOTHING":
-            return await callback_query.answer("هیچ پخش جاری وجود ندارد", show_alert=True)
-        elif call_status == "PLAYING" or call_status == "PAUSED":
-            await change_stream(chat_id)
-            await callback_query.answer("آهنگ بعدی در حال پخش است", show_alert=True)
-    except Exception as e:
-        await callback_query.answer(f"خطا: {str(e)}", show_alert=True)
-
-@bot.on_callback_query(filters.regex("stop_stream_and_leave_vc"))
-async def stop_callback(client, callback_query):
-    chat_id = callback_query.message.chat.id
-    try:
-        call_status = await get_call_status(chat_id)
-        if call_status == "NOTHING":
-            return await callback_query.answer("هیچ پخش جاری وجود ندارد", show_alert=True)
-        elif call_status == "IDLE":
-            return await callback_query.answer("با موفقیت از چت صوتی خارج شد", show_alert=True)
-        elif call_status == "PLAYING" or call_status == "PAUSED":
-            await close_stream(chat_id)
-            await callback_query.answer("پخش متوقف شد و از چت صوتی خارج شد", show_alert=True)
-    except Exception as e:
-        await callback_query.answer(f"خطا: {str(e)}", show_alert=True)
-
-# هندلر برای دکمه بستن (force_close)
-@bot.on_callback_query(filters.regex("force_close"))
-async def force_close_callback(client, callback_query):
-    await callback_query.message.delete()
 
 @bot.on_message(cdx(["pause", "مکث" ,"vpause"]) & ~pyrofl.private)
 async def pause_running_stream_on_vc(client, message):
@@ -1440,224 +1672,32 @@ async def skip_and_change_stream(client, message):
         except Exception:
             LOGGER.info(f"🚫 خطای رد کردن آهنگ: {e}")
             return
-@bot.on_message(cdx(["help", "راهنما"]) & ~pyrofl.private)
-async def show_help(client, message):
-    help_text = """
-╔════════════════════╗
-║   🎵 𝙈𝙐𝙎𝙄𝘾 𝙃𝙀𝙇𝙋 🎵   ║
-╚════════════════════╝
 
-⌾ دستورات پخش موزیک:
 
-◈ `پخش` یا `play`
-› پخش موزیک در گروه
-
-◈ `مکث` یا `pause` 
-› توقف موقت پخش
-
-◈ `ادامه` یا `resume`
-› ادامه پخش موزیک
-
-◈ `بعدی` یا `skip`
-› رد کردن آهنگ فعلی
-
-◈ `اتمام` یا `end`
-› پایان پخش و خروج
-
-◈ `دانلود` یا `dl`
-› دانلود از یوتیوب
-مثال: `دانلود shape of you`
-
-╔════════════════════╗
-║  @ATRINMUSIC_TM  ║
-╚════════════════════╝
-"""
-    await message.reply_text(help_text)
-@bot.on_message(cdx(["صدا", "volume", "vol"]) & ~filters.private)
-async def set_volume_command(client, message):
+@bot.on_message(cdx(["end", "اتمام","vend"]) & ~pyrofl.private)
+async def stop_stream_and_leave_vc(client, message):
     chat_id = message.chat.id
     try:
-        if len(message.command) < 2:
-            return await message.reply_text(
-                "**استفاده:** `/صدا [0-200]`\n**مثال:** `/صدا 100`"
-            )
-        
-        volume = int(message.command[1])
-        
-        if volume < 0 or volume > 200:
-            return await message.reply_text("**❌ میزان صدا باید بین 0 تا 200 باشد**")
-
-        # بررسی وضعیت تماس
-        if not call.get_active_call(chat_id):
-            return await message.reply_text("**➥ هیچ پخش جاری وجود ندارد**")
-
-        # تنظیم صدا
-        await call.change_volume_call(chat_id, volume)
-        
-        await message.reply_text(f"**🔊 میزان صدا تنظیم شد روی: {volume}%**")
-
-    except ValueError:
-        await message.reply_text("**❌ لطفا یک عدد معتبر وارد کنید**")
-    except Exception as e:
-        await message.reply_text(f"**❌ خطا در تنظیم صدا:** `{str(e)}`")
-
-# هندلر دکمه کاهش صدا
-@bot.on_callback_query(filters.regex("decrease_volume"))
-async def decrease_volume_callback(client, callback_query):
-    chat_id = callback_query.message.chat.id
-    try:
-        if not call.get_active_call(chat_id):
-            return await callback_query.answer("پخش جاری وجود ندارد!", show_alert=True)
-
-        current_volume = call.get_call(chat_id).volume or 100
-        new_volume = max(0, current_volume - 10)
-        
-        await call.change_volume_call(chat_id, new_volume)
-        
-        await callback_query.answer(f"🔈 صدا: {new_volume}%", show_alert=True)
-    except Exception as e:
-        await callback_query.answer(f"خطا: {str(e)}", show_alert=True)
-
-# هندلر دکمه افزایش صدا
-@bot.on_callback_query(filters.regex("increase_volume"))
-async def increase_volume_callback(client, callback_query):
-    chat_id = callback_query.message.chat.id
-    try:
-        if not call.get_active_call(chat_id):
-            return await callback_query.answer("پخش جاری وجود ندارد!", show_alert=True)
-
-        current_volume = call.get_call(chat_id).volume or 100
-        new_volume = min(200, current_volume + 10)
-        
-        await call.change_volume_call(chat_id, new_volume)
-        
-        await callback_query.answer(f"🔊 صدا: {new_volume}%", show_alert=True)
-    except Exception as e:
-        await callback_query.answer(f"خطا: {str(e)}", show_alert=True)
-@bot.on_message(cdx(["yt", "یوتیوب"]) & ~filters.private)
-async def youtube_search(client, message):
-    try:
-        if len(message.command) < 2:
-            return await message.reply_text(
-                "**استفاده:** `/yt [نام موزیک]`\n**مثال:** `/yt shape of you`"
-            )
-
-        query = " ".join(message.command[1:])
-        m = await message.reply_text("🔎 در حال جستجو...")
-
-        # جستجو در یوتیوب
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            try:
-                # جستجو با استفاده از ytsearch
-                search_query = f"ytsearch5:{query}"
-                results = ydl.extract_info(search_query, download=False)['entries']
-
-                if not results:
-                    return await m.edit("❌ موردی یافت نشد!")
-
-                # ساخت لیست نتایج
-                text = "🎵 **نتایج جستجو در یوتیوب:**\n\n"
-                for i, item in enumerate(results, 1):
-                    title = item.get('title', 'No Title')
-                    duration = item.get('duration_string', 'N/A')
-                    views = item.get('view_count', 'N/A')
-                    url = item.get('webpage_url', '')
-                    
-                    text += f"**{i}.** `{title}`\n"
-                    text += f"⏱ مدت: {duration} | 👁 بازدید: {views:,}\n"
-                    text += f"🔗 {url}\n\n"
-
-                # ارسال نتایج
-                await m.edit(
-                    text,
-                    disable_web_page_preview=True,
-                    reply_markup=InlineKeyboardMarkup([
-                        [
-                            InlineKeyboardButton(
-                                "دانلود",
-                                callback_data=f"download_{results[0]['id']}"
-                            ),
-                            InlineKeyboardButton(
-                                "بستن",
-                                callback_data="close"
-                            )
-                        ]
-                    ])
-                )
-
-            except Exception as e:
-                await m.edit(f"❌ خطا در جستجو: {str(e)}")
-
-    except Exception as e:
-        await message.reply_text(f"❌ خطا: {str(e)}")
-
-# هندلر دانلود از طریق دکمه
-@bot.on_callback_query(filters.regex(r"^download_(.+)"))
-async def download_callback(client, callback_query):
-    video_id = callback_query.matches[0].group(1)
-    message = callback_query.message
-    user_id = callback_query.from_user.id
-
-    await callback_query.message.edit_text("⏳ در حال دانلود...")
-
-    try:
-        # دریافت اطلاعات ویدیو
-        info = await get_youtube_info(f"https://www.youtube.com/watch?v={video_id}")
-        if not info:
-            return await message.edit("❌ خطا در دریافت اطلاعات ویدیو")
-
-        title = info['title']
-        duration = info.get('duration_string', 'نامشخص')
-        thumbnail = info.get('thumbnail', None)
-        
-        # دانلود فایل
-        with yt_dlp.YoutubeDL(download_opts) as ydl:
-            ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
-
-        # پیدا کردن فایل دانلود شده
-        audio_file = None
-        for file in os.listdir():
-            if file.startswith(title) and file.endswith('.mp3'):
-                audio_file = file
-                break
-
-        if not audio_file:
-            return await message.edit("❌ خطا در دانلود فایل")
-
-        # ارسال فایل
-        caption = f"""
-🎵 **عنوان:** {title}
-⏱ **مدت زمان:** {duration}
-👤 **درخواست کننده:** {callback_query.from_user.mention}
-
-🤖 @ATRINMUSIC_TM
-"""
-        
-        await client.send_audio(
-            message.chat.id,
-            audio_file,
-            caption=caption,
-            duration=info.get('duration'),
-            performer=info.get('uploader', 'YouTube Music'),
-            title=title,
-            thumb=thumbnail
-        )
-
-        # پاکسازی فایل‌ها
-        try:
-            os.remove(audio_file)
-        except:
-            pass
-
         await message.delete()
-
+    except Exception:
+        pass
+    try:
+        call_status = await get_call_status(chat_id)
+        if call_status == "NOTHING":
+            return await message.reply_text("**➥ هیچ پخش جاری وجود ندارد**")
+        elif call_status == "IDLE":
+            return await message.reply_text("**➥ با موفقیت از چت صوتی خارج شد**")
+        elif call_status == "PLAYING" or call_status == "PAUSED":
+            await close_stream(chat_id)
+            return await message.reply_text("**➥ پخش متوقف شد و از چت صوتی خارج شد...**")
+        else:
+            return
     except Exception as e:
-        await message.edit(f"❌ خطا در دانلود: {str(e)}")
-
-# هندلر بستن پیام
-@bot.on_callback_query(filters.regex("^close"))
-async def close_callback(client, callback_query):
-    await callback_query.message.delete()
+        try:
+            await bot.send_message(chat_id, f"**🚫 خطا در اتمام پخش:** `{e}`")
+        except Exception:
+            LOGGER.info(f"🚫 خطای اتمام پخش: {e}")
+            return
 
 @call.on_update(pytgfl.chat_update(ChatUpdate.Status.CLOSED_VOICE_CHAT))
 @call.on_update(pytgfl.chat_update(ChatUpdate.Status.KICKED))
@@ -1934,11 +1974,3 @@ async def broadcast_message(client, message):
 
 if __name__ == "__main__":
     loop.run_until_complete(main())
-    
-    
-    
-    
-    
-    
-    
-    
