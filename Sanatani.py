@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from typing import Union, List, Pattern
 from logging.handlers import RotatingFileHandler
-import google.generativeai as genai
+
 
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError
@@ -80,53 +80,17 @@ if os.path.exists("Config.env"):
     load_dotenv("Config.env")
 
 
-API_ID = int(getenv("API_ID", "27227089"))
-API_HASH = getenv("API_HASH", "03ac3b8dd6a14cf5a231203db4660f59")
-BOT_TOKEN = getenv("BOT_TOKEN", "7710415795:AAHB_dYTTA1AGE8CbWW9WoR8jjJ19eZJA48")
-STRING_SESSION = getenv("STRING_SESSION", "AQGfc9EARh-RE5HWFyjWBY6ZCP3iWMuqEAeOKBXrgpYBIBlwWnNbuYQtaKYF14nxVaGp4E-YR6Js8gbFc74Wh6e4L7gMUHTGkpzcsf_8-6lfaqhX9yMbTpqJ9kyj7ElLXPPWedUL8PbwnlWagyhcip94kHOWLpHZd9yh8_DTk8igELJwj-1U_7P0mn3FQrWXr409UNgtlqlvDr-UO1LfJbgdW1JQdRpyyTR6joZTtJZwcHAaCAY6WjrbAJWKaaWnr5TJy53K5v3_4CB7t36ebscWA85PsncAhFW4kx-k2WNP60FqR5EDehydbLYCg0QfJTe9adVOSVuPznAcw-0TjoZnhGjeBgAAAAHRJtQMAA")
-MONGO_DB_URL = getenv("MONGO_DB_URL", "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.8")
-OWNER_ID = int(getenv("OWNER_ID", "7750519507"))
-LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", "-1002288775154"))
-START_IMAGE_URL = getenv("START_IMAGE_URL", "https://files.catbox.moe/dclvrs.mp4")
+API_ID = int(getenv("API_ID", "26718201"))
+API_HASH = getenv("API_HASH", "89c6268b2a70bcc99c81e3bb240244cf")
+BOT_TOKEN = getenv("BOT_TOKEN", "8073758200:AAFU2lt7fkbS9QyWclZqTRa4_RSuo8Y70ms")
+STRING_SESSION = getenv("STRING_SESSION", "AgGXr_kAMnRR1bNGxt79KvBd0BMdz95Q_AZ2yhMJxy5U_2tbDhlsNZaX9qxEx9NQo1DXoQwi1iLjEWtt8T9XMaXwQ5_6IkF9oRORKJAoQomCpa991LYS5zgeTCfxu2wwAlEN8TqXDbJUgMRq4BT8H_S5d563bjHkwt9QxPNOAmISEQGx7jAuhzErKn_cTPKr8hsI2YKQT4l1VWvOS1BxMs7_WoIckfEMsVfjIC3jYNfVehpNkH2At777mqQDSecJUqMat3pnP7MSIucUkMVRHA9Wkc7E9HPkBUDD81vDnAILavVGPrqrVU2AKwrDYlKfwmCQK61SQg9cKXQookHdIgfQ3f-RbQAAAAHi6b6PAA")
+MONGO_DB_URL = getenv("MONGO_DB_URL", "mongodb+srv://ranger:mohaMmoha900@cluster2.24a45.mongodb.net/?retryWrites=true&w=majority&appName=Cluster2")
+OWNER_ID = int(getenv("OWNER_ID", "6543211255"))
+LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", "-1002371756731"))
+START_IMAGE_URL = getenv("START_IMAGE_URL", "https://files.catbox.moe/93sk0f.jpg")
 REPO_IMAGE_URL = getenv("REPO_IMAGE_URL", "https://files.catbox.moe/nswh7s.jpg")
 STATS_IMAGE_URL = getenv("STATS_IMAGE_URL", "https://files.catbox.moe/2hgoq7.jpg")
-TV_STREAMS = {
-    "شبکه 1": "http://tv1.irib.ir/live-stream/index.m3u8",
-    "شبکه 2": "http://tv2.irib.ir/live-stream/index.m3u8",
-    "شبکه 3": "http://tv3.irib.ir/live-stream/index.m3u8",
-    "شبکه 4": "http://tv4.irib.ir/live-stream/index.m3u8",
-    "شبکه 5": "http://tv5.irib.ir/live-stream/index.m3u8"
-}
-SUDO_USERS = 7750519507,
-RADIO_STREAMS = {
-    "رادیو جوان": "http://s0.cdn1.iranseda.ir:1935/liveedge/radio-javan/playlist.m3u8",
-    "رادیو پیام": "http://s0.cdn1.iranseda.ir:1935/liveedge/radio-payam/playlist.m3u8",
-    "رادیو تهران": "http://s0.cdn1.iranseda.ir:1935/liveedge/radio-tehran/playlist.m3u8",
-    "رادیو ورزش": "http://s0.cdn1.iranseda.ir:1935/liveedge/radio-varzesh/playlist.m3u8"
-}
 
-SATELLITE_STREAMS = {
-    "پرشین تی‌وی": "http://stream.persiantv1.com/ptv1/playlist.m3u8",
-    "من و تو": "http://live.manoto.tv/live/playlist.m3u8",
-    "ایران اینترنشنال": "http://live.iranintl.com/live/playlist.m3u8"
-}
-MOVIE_STREAMS = {
-    "فیلم 1": "movie_stream_url_1",
-    "فیلم 2": "movie_stream_url_2",
-}
-GEMINI_API_KEY = {"AIzaSyBQHwww_7QXwPVPKBxGPxZgxDVGBHxTzKE",
-                   "AIzaSyBQHwww_7QXwPVPKBxGPxZgxDVGBHxTzKE",
-                   "AIzaSyDxRrJSUZ8XxXuG-8FYvBhFh7zJg-c5VXc",
-                   "AIzaSyC-kZnkgzHBF2WQcHxB8OFpBOr_XlZn5Yk"
-}                   
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-pro')
-
-# دیکشنری برای ذخیره اشتراک‌ها
-subscriptions = {}
-volume_levels = {}
-
-# دستور جمینی
 # Memory Database
 
 ACTIVE_AUDIO_CHATS = []
@@ -423,9 +387,9 @@ HELP_C = """```
 ⌬ ᴍᴏʀᴇ ɪɴғᴏ. [ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ](https://t.me/ATRINMUSIC_TM)**"""
 
 HELP_X = """```
-    【◖ ʀᴀɴɢᴇʀ ◗ 】 🚩 ᴍᴇɴᴜ```
+    【◖ Sαηαтαηι ◗ 】 🚩 ᴍᴇɴᴜ```
 **ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs ᴄᴀɴ ʙᴇ ᴜsᴇᴅ ᴡɪᴛʜ : /**
-␥ پخش - پخش موزیک مورد علاقه شما [صوتی]
+␥ /play - پخش موزیک مورد علاقه شما [صوتی]
 
 ␥ /vplay - پخش موزیک مورد علاقه شما [تصویری]
 
@@ -435,290 +399,11 @@ HELP_X = """```
 
 ␥ /skip - رد کردن آهنگ [صوتی و تصویری]
 
-␥ /end - [اتمام]تمام کردن تصویری و صوتی
+␥ /end - پاک کردن و پایان دادن به تمام آهنگ‌ها [صوتی و تصویری]
 
 
 V ɪ s ɪ ᴛ - [ʜᴇʀᴇ](https://t.me/linkdonitehranasli)"""
-def get_media_panel():
-    buttons = InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton("📺 تلویزیون", callback_data="tv_channels"),
-            InlineKeyboardButton("🛰 ماهواره", callback_data="sat_channels")
-        ],
-        [
-            InlineKeyboardButton("📻 رادیو", callback_data="radio_channels"),
-            InlineKeyboardButton("🎬 فیلم", callback_data="movie_channels")
-        ],
-        [
-            InlineKeyboardButton("⏹ پایان پخش", callback_data="stop_stream_and_leave_vc")
-        ]
-    ])
-    return buttons
-@app.on_callback_query(filters.regex("^movie_channels$"))
-async def movie_channels_callback(_, query):
-    buttons = []
-    for movie, stream in MOVIE_STREAMS.items():
-        buttons.append([
-            InlineKeyboardButton(movie, callback_data=f"play_movie_{stream}")
-        ])
-    buttons.append([InlineKeyboardButton("🔙 برگشت", callback_data="back_to_media")])
-    
-    await query.message.edit_text(
-        "**🎬 فیلم مورد نظر خود را انتخاب کنید:**",
-        reply_markup=InlineKeyboardMarkup(buttons)
-    )
-# اضافه کردن دستورات جدید
-@app.on_message(cdx(["media", "رسانه"]) & ~filters.private)
-async def media_panel_command(_, message):
-    chat_id = message.chat.id
-    try:
-        await message.delete()
-    except Exception:
-        pass
-    
-    await message.reply_photo(
-        photo="https://te.legra.ph/file/9ac96338d2f465c0d3d6d.jpg",
-        caption="**🎯 پنل پخش رسانه\n\n📺 لطفاً نوع رسانه مورد نظر خود را انتخاب کنید:**",
-        reply_markup=get_media_panel()
-    )
 
-# اضافه کردن کالبک‌ها
-@app.on_callback_query(filters.regex("^tv_channels$"))
-async def tv_channels_callback(_, query):
-    buttons = []
-    for channel, stream in TV_STREAMS.items():
-        buttons.append([
-            InlineKeyboardButton(channel, callback_data=f"play_tv_{stream}")
-        ])
-    buttons.append([InlineKeyboardButton("🔙 برگشت", callback_data="back_to_media")])
-    
-    await query.message.edit_text(
-        "**📺 کانال مورد نظر خود را انتخاب کنید:**",
-        reply_markup=InlineKeyboardMarkup(buttons)
-    )
-
-@app.on_callback_query(filters.regex("^radio_channels$"))
-async def radio_channels_callback(_, query):
-    buttons = []
-    for station, stream in RADIO_STREAMS.items():
-        buttons.append([
-            InlineKeyboardButton(station, callback_data=f"play_radio_{stream}")
-        ])
-    buttons.append([InlineKeyboardButton("🔙 برگشت", callback_data="back_to_media")])
-    
-    await query.message.edit_text(
-        "**📻 ایستگاه رادیویی مورد نظر خود را انتخاب کنید:**",
-        reply_markup=InlineKeyboardMarkup(buttons)
-    )
-
-@app.on_callback_query(filters.regex("^sat_channels$"))
-async def sat_channels_callback(_, query):
-    buttons = []
-    for channel, stream in SATELLITE_STREAMS.items():
-        buttons.append([
-            InlineKeyboardButton(channel, callback_data=f"play_sat_{stream}")
-        ])
-    buttons.append([InlineKeyboardButton("🔙 برگشت", callback_data="back_to_media")])
-    
-    await query.message.edit_text(
-        "**🛰 شبکه ماهواره‌ای مورد نظر خود را انتخاب کنید:**",
-        reply_markup=InlineKeyboardMarkup(buttons)
-    )
-
-@app.on_callback_query(filters.regex("^play_(tv|radio|sat)_(.+)$"))
-async def play_stream_callback(_, query):
-    stream_type = query.matches[0].group(1)
-    stream_url = query.matches[0].group(2)
-    chat_id = query.message.chat.id
-    
-    try:
-        await call.join_group_call(
-            chat_id,
-            MediaStream(
-                stream_url,
-                video_flags=VideoQuality.HD_720p if stream_type != "radio" else None,
-                audio_flags=AudioQuality.HIGH
-            )
-        )
-        
-        stream_types = {
-            "tv": "📺 تلویزیون",
-            "radio": "📻 رادیو",
-            "sat": "🛰 ماهواره"
-        }
-        
-        await query.message.edit_text(
-            f"**✅ پخش {stream_types[stream_type]} آغاز شد**\n\n"
-            "برای تغییر یا توقف پخش از دکمه‌های زیر استفاده کنید:",
-            reply_markup=get_media_panel()
-        )
-    except Exception as e:
-        
-        await query.message.reply_text(f"**🚫 خطا در پخش:** `{str(e)}`")
-@app.on_message(cdx(["هی", "hey"]) & ~filters.private)
-async def gemini_command(_, message):
-    if len(message.command) < 2:
-        await message.reply_text("لطفاً سوال خود را بعد از دستور بنویسید\nمثال: هی سلام چطوری؟")
-        return
-
-    question = " ".join(message.command[1:])
-    try:
-        response = await asyncio.to_thread(
-            lambda: model.generate_content(question).text
-        )
-        await message.reply_text(f"🤖 پاسخ جمینی:\n\n{response}")
-    except Exception as e:
-        await message.reply_text(f"خطا در دریافت پاسخ از جمینی: {str(e)}")
-
-@app.on_message(cdx(["sub", "اشتراک"]) & filters.user(SUDO_USERS))
-async def add_subscription(_, message):
-    try:
-        user_id = message.reply_to_message.from_user.id
-        days = int(message.command[1])
-        
-        expiry_date = datetime.now() + timedelta(days=days)
-        subscriptions[user_id] = expiry_date
-        
-        await message.reply_text(
-            f"✅ اشتراک کاربر {user_id} به مدت {days} روز فعال شد\n"
-            f"📅 تاریخ انقضا: {expiry_date.strftime('%Y-%m-%d %H:%M:%S')}"
-        )
-    except Exception as e:
-        await message.reply_text(f"❌ خطا در افزودن اشتراک: {str(e)}")
-
-@app.on_message(cdx(["checksub", "چک"]))
-async def check_subscription(_, message):
-    user_id = message.from_user.id
-    if user_id in subscriptions:
-        remaining = subscriptions[user_id] - datetime.now()
-        if remaining.total_seconds() > 0:
-            days = remaining.days
-            hours = remaining.seconds // 3600
-            await message.reply_text(
-                f"✅ اشتراک شما فعال است\n"
-                f"⏳ زمان باقیمانده: {days} روز و {hours} ساعت"
-            )
-        else:
-            del subscriptions[user_id]
-            await message.reply_text("❌ اشتراک شما منقضی شده است")
-    else:
-        await message.reply_text("❌ شما اشتراک فعال ندارید")
-
-# تنظیمات صدا
-@app.on_message(cdx(["vol", "صدا"]))
-async def set_volume(_, message):
-    chat_id = message.chat.id
-    if len(message.command) < 2:
-        current_vol = volume_levels.get(chat_id, 100)
-        await message.reply_text(f"🔊 میزان صدای فعلی: {current_vol}%")
-        return
-    
-    try:
-        volume = int(message.command[1])
-        if not 0 <= volume <= 200:
-            await message.reply_text("❌ میزان صدا باید بین 0 تا 200 باشد")
-            return
-        
-        volume_levels[chat_id] = volume
-        await call.change_volume_call(chat_id, volume)
-        await message.reply_text(f"🔊 میزان صدا به {volume}% تغییر کرد")
-    except Exception as e:
-        await message.reply_text(f"❌ خطا در تنظیم صدا: {str(e)}")
-
-# اضافه کردن دکمه‌های تنظیم صدا به پنل پخش
-def get_media_panel():
-    buttons = InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton("📺 تلویزیون", callback_data="tv_channels"),
-            InlineKeyboardButton("🛰 ماهواره", callback_data="sat_channels")
-        ],
-        [
-            InlineKeyboardButton("📻 رادیو", callback_data="radio_channels"),
-            InlineKeyboardButton("🎬 فیلم", callback_data="movie_channels")
-        ],
-        [
-            InlineKeyboardButton("🔉 کم کردن", callback_data="volume_down"),
-            InlineKeyboardButton("🔊 زیاد کردن", callback_data="volume_up")
-        ],
-        [
-            InlineKeyboardButton("⏹ پایان پخش", callback_data="stop_stream_and_leave_vc")
-        ]
-    ])
-    return buttons
-
-# کالبک‌های تنظیم صدا
-@app.on_callback_query(filters.regex("^volume_(up|down)$"))
-async def volume_callback(_, query):
-    chat_id = query.message.chat.id
-    current_vol = volume_levels.get(chat_id, 100)
-    
-    if query.data == "volume_up":
-        new_vol = min(current_vol + 10, 200)
-    else:
-        new_vol = max(current_vol - 10, 0)
-    
-    try:
-        volume_levels[chat_id] = new_vol
-        await call.change_volume_call(chat_id, new_vol)
-        await query.answer(f"🔊 میزان صدا: {new_vol}%")
-    except Exception as e:
-        await query.answer(f"خطا: {str(e)}", show_alert=True)
-
-# چک کردن اشتراک قبل از اجرای دستورات
-def check_subscription_decorator(func):
-    async def wrapper(client, message):
-        user_id = message.from_user.id
-        if user_id in SUDO_USERS:
-            return await func(client, message)
-            
-        if user_id not in subscriptions:
-            await message.reply_text("❌ شما اشتراک فعال ندارید")
-            return
-            
-        if datetime.now() > subscriptions[user_id]:
-            del subscriptions[user_id]
-            await message.reply_text("❌ اشتراک شما منقضی شده است")
-            return
-            
-        return await func(client, message)
-    return wrapper
-
-# اعمال دکوراتور به دستورات
-@app.on_message(cdx(["media", "رسانه"]) & ~filters.private)
-@check_subscription_decorator
-async def media_panel_command(_, message):
-    # کد قبلی پنل رسانه
-    pass
-
-# راهنمای دستورات
-@app.on_message(cdx(["help", "راهنما"]))
-async def help_command(_, message):
-    help_text = """
-**🎯 راهنمای دستورات ربات:**
-
-**📺 پخش رسانه:**
-• `رسانه` یا `media` - نمایش پنل پخش رسانه
-• `صدا` یا `vol` [0-200] - تنظیم میزان صدا
-
-**🤖 هوش مصنوعی:**
-• `هی` یا `hey` [متن] - پرسش از جمینی
-
-**👤 سیستم اشتراک:**
-• `اشتراک` یا `sub` [تعداد روز] - افزودن اشتراک (فقط ادمین)
-• `چک` یا `checksub` - بررسی وضعیت اشتراک
-
-**⚙️ کنترل پخش:**
-• از دکمه‌های پنل برای کنترل پخش استفاده کنید
-• میزان صدا را با دکمه‌های 🔉 و 🔊 تنظیم کنید
-"""
-    await message.reply_text(help_text)
-
-@app.on_callback_query(filters.regex("^back_to_media$"))
-async def back_to_media_callback(_, query):
-    await query.message.edit_text(
-        "**🎯 پنل پخش رسانه\n\n📺 لطفاً نوع رسانه مورد نظر خود را انتخاب کنید:**",
-        reply_markup=get_media_panel()
-    )
 # Callback query handler
 @bot.on_callback_query(filters.regex("UTTAM_RATHORE"))
 async def helper_cb(client, CallbackQuery):
@@ -783,7 +468,7 @@ async def start_message_private(client, message):
 𝙍𝘼𝙉𝙂𝙀𝙍
 
 ╭─────────────╮
-┅━─⊰ 𝙍𝘼𝙉𝙂𝙀𝙍 ™⊱─━┅ 
+┅━─⊰ ?𝙍𝘼𝙉𝙂𝙀𝙍 ™⊱─━┅ 
 ╰─────────────╯"""
 
         buttons = InlineKeyboardMarkup(
@@ -810,8 +495,8 @@ async def start_message_private(client, message):
                         url="https://t.me/ATRINMUSIC_TM1",
                     ),
                     InlineKeyboardButton(
-                        text="📢 راهنما ربات",
-                        callback_data="UTTAM_RATHORE",
+                        text="📢 اخبار ربات",
+                        url="https://t.me/linkdonitehranasli",
                     ),
                 ]
             ]
