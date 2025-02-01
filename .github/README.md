@@ -6,7 +6,7 @@
 </div>
 
 <p align="center">
-    <a href="https://github.com/BABY-MUSIC/SANATANI_MxPLAYER">
+    <a href="https://github.com/magicdj12/SANATANI_MxPLAYER">
         <img src="https://img.shields.io/github/stars/BABY-MUSIC/SANATANI_MxPLAYER?color=black&logo=github&logoColor=black&style=for-the-badge" alt="Stars" />
     </a>
     <a href="https://github.com/BABY-MUSIC/SANATANI_MxPLAYER/network/members">
